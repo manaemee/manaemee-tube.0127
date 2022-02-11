@@ -1,0 +1,10 @@
+mixin video(video)
+    div 
+        h3=video.title
+        span=video.meta.views
+        span=video.meta.favs
+    div    
+        h4=video.description
+        p=String(video.createdAt).slice(4,15)
+        small=video.hashtags
+        hr

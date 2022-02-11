@@ -1,0 +1,9 @@
+include ../mixins/video
+ul
+    each video in videos
+        div
+            a(href=`/videos/${video.id}/edit`) Edit Video &rarr;
+            a(href=`/videos/${video.id}/delete`) Delete Video &rarr;
+        +video(video)
+    else 
+        li nothing
