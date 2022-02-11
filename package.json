@@ -16,6 +16,7 @@
   },
   "homepage": "https://github.com/manaemee/manaemee-tube.0127#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "express": "^4.17.2",
     "moment": "^2.29.1",
     "mongoose": "^6.2.1",

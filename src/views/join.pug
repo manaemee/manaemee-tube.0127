@@ -1,0 +1,10 @@
+extends base
+
+block content 
+    h1=pageTitle
+    form(method="POST")
+        input(name="name", placeholder="name", type="text", required)
+        input(name="username", placeholder="username", type="text", required, maxlength="10")
+        input(name="email", placeholder="email", type="email", required)
+        input(name="password", placeholder="password", type="password", required, minlength="5")
+        input(type="submit", value="Join")

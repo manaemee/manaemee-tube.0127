@@ -1,4 +1,3 @@
-import e from "express";
 import Video from "../models/Video";
 
 export const trending = async (req, res) => {
@@ -7,17 +6,15 @@ if(keyword){
     const videos = await Video.find({
         title: { $regex: keyword, $options: 'i' }
     });
-    console.log(videos);
     if(videos.length !== 0){
         return res.render("search", {pageTitle:"search", videos});
     }
-   return res.redirect("/");
+   return res.render("404");
 }
 const videos = await Video.find({}).sort({createdAt:"desc"});
     return res.render("home", {pageTitle: "Home", videos});
 };
 export const getUpload = (req, res) => {
- 
     return res.render("upload", {pageTitle:"Upload"})
 };
 
