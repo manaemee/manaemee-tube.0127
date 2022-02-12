@@ -5,6 +5,7 @@
 /login -> Login
 /search -> Search
 
+/users/my-profile -> See my profile
 /users/:id -> See user
 /users/edit -> Edit My Profile
 /users/delete -> Delete My Profile

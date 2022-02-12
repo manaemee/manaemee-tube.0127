@@ -1,7 +1,11 @@
 div
-    h3
-        a(href="/videos/upload") upload
-    h3   
-        a(href="/join") join
-    h3
-        a(href="/login") login
+    if !loggedIn
+        h3
+            a(href="/login") login
+    else
+        h3 
+            a(href="/users/my-profile") #{loggedInUser.name}의 Profile
+        h3
+            a(href="/videos/upload") upload
+        h3
+            a(href="/logout") logout

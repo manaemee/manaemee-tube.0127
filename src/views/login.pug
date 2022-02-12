@@ -1,4 +1,14 @@
 extends base
 
 block content
-    h1  login
+    h1=pageTitle
+    if errorMessage
+        span=errorMessage
+    form(method="POST")
+        input(name="username", placeholder="username", type="text", required, maxlength="10")
+        input(name="password", placeholder="password", type="password", required, minlength="5")
+        input(type="submit", value="Join")
+    hr
+    div
+        a(href="/join") 
+            span Create Account  &rarr; 
