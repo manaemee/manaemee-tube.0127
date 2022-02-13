@@ -86,22 +86,6 @@ if("access_token" in data){
         }
     })).json();
    let exist= await User.findOne({email:userRequest.email});
-  /*   if(exist){
-        req.session.loggedIn = true;
-        req.session.user = exist;
-        return res.redirect("/");
-    }else{
-        const user = await User.create({
-            name:userRequest.login,
-            username:userRequest.login,
-            socialOnly:true,
-            email:userRequest.email,
-            password:"",
-        })
-        req.session.loggedIn = true;
-        req.session.user = user;
-        return res.redirect("/");
-    } */
     if(!exist){
         exist =  await User.create({
             name:userRequest.login,
@@ -119,6 +103,60 @@ if("access_token" in data){
   return res.redirect("/login");
 }
 }
+export const Kakaostart = async (req, res) => {
+    const baseUrl= "https://kauth.kakao.com/oauth/authorize";   
+    const config = {
+        client_id:process.env.KAKAO_CLIENTID,
+        redirect_uri:process.env.KAKAO_REDIRECT,    
+    }
+    const params = new URLSearchParams(config).toString();
+    const finalURL = `${baseUrl}?${params}&response_type=code&scope=account_email`;
+    return res.redirect(finalURL);
+};
+export const Kakaofinish = async (req,res)=>{
+const baseUrl = "https://kauth.kakao.com/oauth/token";
+const config = {
+    grant_type:"authorization_code",
+    client_id:process.env.KAKAO_CLIENTID,
+    redirect_uri:process.env.KAKAO_REDIRECT,
+    code:req.query.code,
+}
+
+const params = new URLSearchParams(config).toString();
+
+const finalUrl = `${baseUrl}?${params}`;
+const data = await(await fetch(finalUrl,{
+    method:"POST",
+    headers:{
+        "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+    }
+})).json();
+if("access_token" in data){
+    const {access_token} = data;
+    const userRequest = await (await fetch("https://kapi.kakao.com/v2/user/me", {
+        headers:{
+            Authorization: `Bearer ${access_token}`,
+        }
+    })).json();
+    let exist= await User.findOne({email:userRequest.kakao_account.email});
+    if(!exist){
+        exist =  await User.create({
+            name:userRequest.properties.nickname,
+            username:userRequest.properties.nickname,
+            avatar:userRequest.kakao_account.profile.thumbnail_image_url,
+            socialOnly:true,
+            email:userRequest.kakao_account.email,
+            password:"",
+        })
+    }
+    req.session.loggedIn = true;
+    req.session.user = exist;
+    return res.redirect("/");
+}else{
+    return res.redirect("/login");
+};
+}
+
 export const seeUser = (req, res) => res.send("see user");
 export const logout = (req, res) => {
     req.session.destroy();
