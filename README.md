@@ -6,9 +6,8 @@
 /search -> Search
 
 /users/my-profile -> See my profile
-/users/:id -> See user
+/users/:id -> See user(See video's owner)
 /users/edit -> Edit My Profile
-/users/delete -> Delete My Profile
 /users/logout -> Log Out
 
 /videos/:id/edit -> Edit Video

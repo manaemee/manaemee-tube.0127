@@ -1,5 +1,6 @@
 import User from "../models/User";
 import bcrypt from "bcrypt";
+import fetch from "node-fetch";
 
 export const myprofile = (req, res) => res.send("my profile");
 export const editUser = (req, res) => res.send("Edit User");
@@ -36,7 +37,8 @@ export const getLogin = (req, res) => res.render("login", {pageTitle:"login"})
 export const postLogin = async (req, res) => {
     const {username, password} = req.body;
     const user = await User.findOne({
-        username
+        username,
+        socialOnly:false,
     });
     if(!user){
         return res.status(400).render("login", {pageTitle:"Login", errorMessage:"An account with this username does not exits"});
@@ -49,6 +51,76 @@ export const postLogin = async (req, res) => {
    req.session.user = user;
     return res.redirect("/");
 }
+export const  Githubstart = (req , res) => {
+    const baseUrl= "https://github.com/login/oauth/authorize";
+    const config = {
+        client_id: process.env.GH_CLIENTID,
+        allow_signup:false,
+        scope:"user"
+    }
+    const params = new URLSearchParams(config).toString();
+    const finalURL = `${baseUrl}?${params}`;
+    return res.redirect(finalURL);
+}
+export const Githubfinish = async (req, res) =>{
+const baseUrl = "https://github.com/login/oauth/access_token";
+const config = {
+    client_id:process.env.GH_CLIENTID,
+    client_secret:process.env.GH_SECRET,
+    code:req.query.code,
+}
+const params = new URLSearchParams(config).toString();
+const finalUrl = `${baseUrl}?${params}`;
+
+const data = await(await fetch(finalUrl,{
+    method:"POST",
+    headers:{
+        Accept:"application/json",
+    }
+})).json();
+if("access_token" in data){
+    const {access_token} = data;
+    const userRequest = await (await fetch("https://api.github.com/user", {
+        headers:{
+            Authorization: `token ${access_token}`,
+        }
+    })).json();
+   let exist= await User.findOne({email:userRequest.email});
+  /*   if(exist){
+        req.session.loggedIn = true;
+        req.session.user = exist;
+        return res.redirect("/");
+    }else{
+        const user = await User.create({
+            name:userRequest.login,
+            username:userRequest.login,
+            socialOnly:true,
+            email:userRequest.email,
+            password:"",
+        })
+        req.session.loggedIn = true;
+        req.session.user = user;
+        return res.redirect("/");
+    } */
+    if(!exist){
+        exist =  await User.create({
+            name:userRequest.login,
+            username:userRequest.login,
+            avatar:userRequest.avatar_url,
+            socialOnly:true,
+            email:userRequest.email,
+            password:"",
+        })
+    }
+    req.session.loggedIn = true;
+    req.session.user = exist;
+    return res.redirect("/");
+}else{
+  return res.redirect("/login");
+}
+}
 export const seeUser = (req, res) => res.send("see user");
-export const removeUser = (req, res) => res.send("remove User");
-export const logout = (req, res) => res.send("logout");
+export const logout = (req, res) => {
+    req.session.destroy();
+    return res.redirect("/");
+};
