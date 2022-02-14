@@ -3,7 +3,56 @@ import bcrypt from "bcrypt";
 import fetch from "node-fetch";
 
 export const myprofile = (req, res) => res.send("my profile");
-export const editUser = (req, res) => res.send("Edit User");
+export const getEditUser = (req, res) => {
+    return res.render("edit-profile", {pageTitle:"Edit Profile"})
+};
+export const postEditUser = async (req, res) => {
+    const {
+        body: { name, email, username},
+        session: {
+          user: { _id },
+        },
+      } = req;
+const findUsername = await User.findOne({ username });
+const findEmail = await User.findOne({ email });
+if (findUsername._id != _id || findEmail._id != _id) {
+    return res.render("edit-profile", {
+      pageTitle: "Edit  Profile",
+      errorMessage: "User is exist",
+    });
+  }
+const updatedUser = await User.findByIdAndUpdate(_id,{
+    name,
+    email,
+    username,
+},{new:true});
+req.session.user = updatedUser;
+return res.redirect("/users/edit");
+};
+export const getChangePassword = (req, res) =>{
+return res.render("change-password", {pageTitle:"change password"});
+}
+
+export const postChangePassword = async (req, res) => {
+ const {
+     session:{user:{_id}}, 
+     body:{oldpassword, newpassword, confirmpassword}
+    } = req; 
+const owner = await User.findById(_id);
+ const check = bcrypt.compareSync(oldpassword, owner.password);
+ if(!check){
+     return res.render("change-password", 
+     {pageTitle:"change password", errorMessage:"The current password is incorrect"
+    })
+ }
+ if(newpassword !== confirmpassword){
+    return res.status(400).render("change-password", 
+    {pageTitle:"change password", errorMessage:"New password does not match the confirmation"})
+ }
+ owner.password = newpassword
+ await owner.save();
+ return res.redirect("/users/change-password");
+}
 export const getJoin = (req, res) => {res.render("join" , {pageTitle: "Join"})};
 export const postJoin = async (req, res) => {
     const {name, username, email, password} = req.body; 

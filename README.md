@@ -5,8 +5,8 @@
 /login -> Login
 /search -> Search
 
-/users/my-profile -> See my profile
 /users/:id -> See user(See video's owner)
+/users/change-password -> Change password
 /users/edit -> Edit My Profile
 /users/logout -> Log Out
 

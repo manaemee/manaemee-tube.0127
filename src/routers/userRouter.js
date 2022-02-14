@@ -1,14 +1,17 @@
 import express from "express";
-import {myprofile, editUser,seeUser,Githubstart,Githubfinish,Kakaostart, Kakaofinish,logout} from "../controllers/userController"
+import { getEditUser, getChangePassword, postChangePassword,postEditUser, seeUser,Githubstart,Githubfinish,Kakaostart, Kakaofinish, logout} from "../controllers/userController"
+import { protectorMiddleware,publicOnlyMiddleware,notsocialOnlyMiddleware } from "../middleware";
+
 const userRouter = express.Router();
 
-userRouter.get("/my-profile", myprofile);
-userRouter.get("/edit", editUser);
-userRouter.get("/github/start", Githubstart);
-userRouter.get("/github/callback", Githubfinish);
-userRouter.get("/kakao/start", Kakaostart);
-userRouter.get("/kakao/callback", Kakaofinish);
-userRouter.get("/logout", logout);
+
+userRouter.route("/edit").all(protectorMiddleware).get(getEditUser).post(postEditUser);
+userRouter.route("/change-password").all(protectorMiddleware).all(notsocialOnlyMiddleware).get(getChangePassword).post(postChangePassword);
+userRouter.get("/github/start", publicOnlyMiddleware, Githubstart);
+userRouter.get("/github/callback",publicOnlyMiddleware, Githubfinish);
+userRouter.get("/kakao/start", publicOnlyMiddleware, Kakaostart);
+userRouter.get("/kakao/callback", publicOnlyMiddleware, Kakaofinish);
+userRouter.get("/logout", protectorMiddleware, logout);
 userRouter.get("/:id", seeUser);
 
 export default userRouter;
