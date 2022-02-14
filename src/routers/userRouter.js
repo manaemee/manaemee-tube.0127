@@ -1,11 +1,11 @@
 import express from "express";
 import { getEditUser, getChangePassword, postChangePassword,postEditUser, seeUser,Githubstart,Githubfinish,Kakaostart, Kakaofinish, logout} from "../controllers/userController"
-import { protectorMiddleware,publicOnlyMiddleware,notsocialOnlyMiddleware } from "../middleware";
+import { protectorMiddleware,publicOnlyMiddleware,notsocialOnlyMiddleware,avatarUpload } from "../middleware";
 
 const userRouter = express.Router();
 
 
-userRouter.route("/edit").all(protectorMiddleware).get(getEditUser).post(postEditUser);
+userRouter.route("/edit").all(protectorMiddleware).get(getEditUser).post(avatarUpload.single("avatar"), postEditUser);
 userRouter.route("/change-password").all(protectorMiddleware).all(notsocialOnlyMiddleware).get(getChangePassword).post(postChangePassword);
 userRouter.get("/github/start", publicOnlyMiddleware, Githubstart);
 userRouter.get("/github/callback",publicOnlyMiddleware, Githubfinish);

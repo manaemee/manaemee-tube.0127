@@ -10,9 +10,11 @@ export const postEditUser = async (req, res) => {
     const {
         body: { name, email, username},
         session: {
-          user: { _id },
+          user: { _id, avatar },
         },
+        file,
       } = req;
+      console.log(avatar);
 const findUsername = await User.findOne({ username });
 const findEmail = await User.findOne({ email });
 if (findUsername._id != _id || findEmail._id != _id) {
@@ -25,6 +27,7 @@ const updatedUser = await User.findByIdAndUpdate(_id,{
     name,
     email,
     username,
+    avatar: file? file.path: avatar
 },{new:true});
 req.session.user = updatedUser;
 return res.redirect("/users/edit");

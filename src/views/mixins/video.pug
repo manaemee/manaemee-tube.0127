@@ -1,4 +1,5 @@
 mixin video(video)
+    video(src="/"+video.file, controls, width=750)
     div 
         h3=video.title
         span=video.meta.views
