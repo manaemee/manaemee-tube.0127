@@ -46,10 +46,14 @@ session:{user:{_id}}
 }
 export const getEditVideo = async (req, res) => {
    const {id} = req.params;
+   const {user:{_id}} = req.session;
    const video = await Video.findById(id);
    if(!video){
     return res.status(404).render("404", {pageTitle:"Sorry, Video not found!"});
    };
+   if(String(video.owner) !== String(_id)){
+       return res.status(403).redirect("/");
+   }
     return res.render("VideoEdit", {pageTitle: "Edit Your Video",video});
 };
 export const postEditVideo = async (req, res) =>{
@@ -69,6 +73,14 @@ export const postEditVideo = async (req, res) =>{
 }
 export const removeVideo = async (req, res) => {
     const {id} = req.params;
-   await  Video.findByIdAndDelete(id);
+    const {_id} = req.session.user;
+  const video =  await  Video.findByIdAndDelete(id);
+   const user = await User.findById(_id);
+   const array = user.videos.filter((element) => String(element) !== String(id));
+   if(String(video.owner) !== String(_id)){
+    return res.status(403).redirect("/");
+}
+    user.videos = array;
+    user.save();
     return res.redirect("/");
 };

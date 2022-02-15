@@ -54,7 +54,7 @@ const owner = await User.findById(_id);
  }
  owner.password = newpassword
  await owner.save();
- return res.redirect("/users/change-password");
+ return res.redirect("/");
 }
 export const getJoin = (req, res) => {res.render("join" , {pageTitle: "Join"})};
 export const postJoin = async (req, res) => {

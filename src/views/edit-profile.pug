@@ -2,6 +2,8 @@ extends base
 block content 
     h1=pageTitle
     img(src="/" + loggedInUser.avatar width="80" height="80")
+    a(href="change-password") Change password &rarr;
+    hr
     if errorMessage
         span=errorMessage
     form(method="POST", enctype="multipart/form-data")
@@ -12,5 +14,3 @@ block content
         input(placeholder="Username", name="username", type="text", required, value=loggedInUser.username)
         input(type="submit", value="Update Profile")
         if !loggedInUser.socialOnly
-            hr
-            a(href="change-password") Change password &rarr;
