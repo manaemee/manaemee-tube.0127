@@ -1,11 +1,13 @@
 mixin video(video)
-    video(src="/"+video.file, controls, width=750)
+    video(src="/"+video.fileUrl, controls, width=750)
     div 
         h3=video.title
-        span=video.meta.views
-        span=video.meta.favs
+        div
+            span views #{video.meta.views}
+            span likes #{video.meta.favs}
     div    
         h4=video.description
         p=String(video.createdAt).slice(4,15)
         small=video.hashtags
+        small=video.owner.name
         hr

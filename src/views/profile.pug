@@ -1,0 +1,11 @@
+extends base
+include ./mixins/video
+block content
+    div
+        h1=pageTitle
+        a(href="/users/edit") Edit Profile &rarr;
+    if user.videos.length > 0
+        each video in user.videos 
+            +video(video)
+    else
+        h2 There's no video

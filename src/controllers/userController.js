@@ -1,4 +1,5 @@
 import User from "../models/User";
+import Video from "../models/Video";
 import bcrypt from "bcrypt";
 import fetch from "node-fetch";
 
@@ -14,7 +15,6 @@ export const postEditUser = async (req, res) => {
         },
         file,
       } = req;
-      console.log(avatar);
 const findUsername = await User.findOne({ username });
 const findEmail = await User.findOne({ email });
 if (findUsername._id != _id || findEmail._id != _id) {
@@ -209,7 +209,14 @@ if("access_token" in data){
 };
 }
 
-export const seeUser = (req, res) => res.send("see user");
+export const seeUser = async (req, res) => {
+    const {id} = req.params;
+    const user = await User.findById(id).populate("videos");
+    if(!user){
+        return res.status(404).render("404");
+    }
+    return res.render("profile", {pageTitle:`${user.name}'s Profile`,user})
+};
 export const logout = (req, res) => {
     req.session.destroy();
     return res.redirect("/");

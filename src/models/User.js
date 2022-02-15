@@ -8,6 +8,7 @@ const UserSchema = new mongoose.Schema({
     socialOnly:{type:Boolean, default:false},
     email: {type:String, required:true, unique:true},
     password: String,
+    videos:[{type:mongoose.Schema.Types.ObjectId, required:true, ref:"Video"}]
 })
 
 

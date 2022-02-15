@@ -1,3 +1,4 @@
+import User from "../models/User";
 import Video from "../models/Video";
 
 export const trending = async (req, res) => {
@@ -11,8 +12,8 @@ if(keyword){
     }
    return res.render("404");
 }
-const videos = await Video.find({}).sort({createdAt:"desc"});
-    return res.render("home", {pageTitle: "Home", videos});
+const videos = await Video.find({}).populate("owner").sort({createdAt:"desc"});
+    return res.render("home", {videos});
 };
 export const getUpload = (req, res) => {
     return res.status(404).render("upload", {pageTitle:"Upload"})
@@ -20,15 +21,20 @@ export const getUpload = (req, res) => {
 
 export const postUpload = async (req, res) =>{
     const {body:{title, description, hashtags},
-file:{path:fileUrl}} = req;
-
+file:{path:fileUrl},
+session:{user:{_id}}
+} = req;
     try{
-    await Video.create({
+  const newVideo = await Video.create({
             title,
             fileUrl,
             description,
+            owner:_id,
             hashtags:Video.formatHashtags(hashtags)
         });
+        const user = await User.findById(_id);
+        user.videos.push(newVideo._id);
+        user.save();
     }catch(error){
         return res.status(400).render("upload", {
             pageTitle:"Upload",
