@@ -1,6 +1,7 @@
 extends base
 include ./mixins/video
-block content
-        each video in videos
-            div
+block routes
+    div.main__content
+        div.video__content
+            each video in videos
                 +video(video)

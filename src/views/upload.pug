@@ -1,13 +1,15 @@
 extends base
 
-block content
-    h1=pageTitle
-    if errorMessage
-        span=errorMessage
-    form(method="POST", enctype="multipart/form-data")
-        label(for="video") Video File 
-        input(type="file", accept="video/*", required, id="video", name="video")
-        input(placeholder="Title", required, type="text", maxlength="10" name="title")
-        input(placeholder="Description", required, type="text", minlength="10" name="description")
-        input(placeholder="Hashtags, separated by comma without space.", required, type="text", name="hashtags")
-        input(type="submit", value="Upload your Video")
+block routes
+    div.main__content
+        div.content
+            h1=pageTitle
+            if errorMessage
+                span=errorMessage
+            form(method="POST", enctype="multipart/form-data")
+                label(for="video") Video File 
+                input(type="file", accept="video/*", required, id="video", name="video")
+                input(placeholder="Title", required, type="text", maxlength="15" name="title")
+                input(placeholder="Description", required, type="text", minlength="10" name="description")
+                input(placeholder="Hashtags, separated by comma without space.", required, type="text", name="hashtags")
+                input(type="submit", value="Upload your Video")

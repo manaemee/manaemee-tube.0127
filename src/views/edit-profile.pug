@@ -1,16 +1,18 @@
 extends base
-block content 
-    h1=pageTitle
-    img(src="/" + loggedInUser.avatar width="80" height="80")
-    a(href="change-password") Change password &rarr;
-    hr
-    if errorMessage
-        span=errorMessage
-    form(method="POST", enctype="multipart/form-data")
-        label(for="avatar")
-        input(id="avatar", type="file" name="avatar" accept="image/*")
-        input(placeholder="Name", name="name", type="text", required, value=loggedInUser.name)
-        input(placeholder="Email", name="email", type="email", required, value=loggedInUser.email)
-        input(placeholder="Username", name="username", type="text", required, value=loggedInUser.username)
-        input(type="submit", value="Update Profile")
-        if !loggedInUser.socialOnly
+block routes
+    div.main__content
+        div.content
+            h1=pageTitle
+            img(src="/" + loggedInUser.avatar width="80" height="80")
+            if !loggedInUser.socialOnly
+                a(href="change-password") Change password &rarr;
+            hr
+            if errorMessage
+                span=errorMessage
+            form(method="POST", enctype="multipart/form-data")
+                label(for="avatar")
+                input(id="avatar", type="file" name="avatar" accept="image/*")
+                input(placeholder="Name", name="name", type="text", required, value=loggedInUser.name)
+                input(placeholder="Email", name="email", type="email", required, value=loggedInUser.email)
+                input(placeholder="Username", name="username", type="text", required, value=loggedInUser.username)
+                input(type="submit", value="Update Profile")

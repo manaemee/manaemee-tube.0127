@@ -6,14 +6,15 @@ const {keyword} = req.query;
 if(keyword){
     const videos = await Video.find({
         title: { $regex: keyword, $options: 'i' }
-    });
+    }).populate("owner").sort({createdAt:"desc"});
     if(videos.length !== 0){
-        return res.render("search", {videos});
+        return res.render("search", {pageTitle:"search" , videos});
     }
    return res.render("404");
 }
 const videos = await Video.find({}).populate("owner").sort({createdAt:"desc"});
-    return res.render("home", {videos});
+  
+return res.render("home", {videos});
 };
 export const getUpload = (req, res) => {
     return res.status(404).render("upload", {pageTitle:"Upload"})
@@ -59,7 +60,6 @@ export const getEditVideo = async (req, res) => {
 export const postEditVideo = async (req, res) =>{
     const {id} = req.params;
     const {title, description, hashtags} = req.body;
-
     const video = await Video.findById(id);
     if(!video){
         return res.status(404).render("404", {pageTitle: "Video not found"});
@@ -84,3 +84,14 @@ export const removeVideo = async (req, res) => {
     user.save();
     return res.redirect("/");
 };
+
+export const registerView = async (req, res) => {
+  const {id} = req.params;
+  const video = await Video.findById(id);
+  if(!video){
+    return res.sendStatus(404);
+  }
+video.views = video.views + 1 ;
+await video.save();
+return res.sendStatus(200);
+}

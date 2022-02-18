@@ -85,7 +85,7 @@ export const postJoin = async (req, res) => {
     })
 }
 };
-export const getLogin = (req, res) => res.render("login", {pageTitle:"login"})
+export const getLogin = (req, res) => res.render("login", {pageTitle:"Sign In"})
 export const postLogin = async (req, res) => {
     const {username, password} = req.body;
     const user = await User.findOne({
@@ -212,10 +212,11 @@ if("access_token" in data){
 export const seeUser = async (req, res) => {
     const {id} = req.params;
     const user = await User.findById(id).populate("videos");
+    console.log(user);
     if(!user){
         return res.status(404).render("404");
     }
-    return res.render("profile", {pageTitle:`${user.name}'s Profile`,user})
+    return res.render("profile", {pageTitle:`${user.username}'s Profile`, user})
 };
 export const logout = (req, res) => {
     req.session.destroy();

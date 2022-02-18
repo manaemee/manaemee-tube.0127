@@ -1,0 +1,22 @@
+.main__content {
+  height: 100vh;
+  background-color: $contentbg;
+  margin-left: 33%;
+}
+.content {
+  height: 100%;
+  margin: 0 auto;
+  padding: 20vh;
+  width: 80%;
+  a {
+    color: $headerbox;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+.video__content {
+  height: 100vh;
+  margin: 0 auto;
+  padding: 10vh 20vh;
+}

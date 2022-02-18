@@ -3,15 +3,12 @@ import mongoose from "mongoose";
 
 
 const videoSchema = new mongoose.Schema({
-    title: {type:String, required:true, maxlength:10, uppercase:true , trim:true},
+    title: {type:String, required:true, maxlength:15, uppercase:true , trim:true},
     fileUrl: {type:String, required:true},
     description: {type: String, required: true, minlength: 10 , trim:true},
     createdAt: {type:Date, required:true, default:Date.now},
     hashtags: [{type: String , trim:true}],
-    meta:{
-        views:{type:Number, default: 0 , required:true},
-        favs:{type:Number, default: 0 , required:true},
-    },
+    views:{type:Number, default: 0 , required:true},
     owner: {type:mongoose.Schema.Types.ObjectId, required:true, ref:"User"}
 });
 

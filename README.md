@@ -1,5 +1,7 @@
 # manaemeetube Reloaded
 
+split and conquer "request, response, template, controller, router"
+
 /-> Home
 /join-> Join
 /login -> Login

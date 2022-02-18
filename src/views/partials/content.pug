@@ -1,12 +1,7 @@
 include ../mixins/video
-div
-    each video in videos
-        if String(video.owner._id) === String(loggedInUser._id)
-            div
-                a(href=`/videos/${video.id}/edit`) Edit Video &rarr;
-                a(href=`/videos/${video.id}/delete`) Delete Video &rarr;
-        div 
-            a(href=`/users/${video.owner._id}`)=video.owner.username
-        +video(video)
-    else 
-        li nothing
+div.main__content
+    div.video__content
+        each video in videos
+            +video(video)
+        else 
+            li nothing

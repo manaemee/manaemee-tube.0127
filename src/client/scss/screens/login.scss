@@ -1,0 +1,44 @@
+.content {
+  h1 {
+    font-size: 48px;
+    margin-bottom: 40px;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    .username,
+    .password {
+      font-size: 20px;
+      opacity: 0.5;
+      margin-bottom: 13px;
+    }
+  }
+  .social__login {
+    opacity: 0.5;
+    font-size: 15px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 50px;
+  }
+  input,
+  .join__content {
+    padding: 20px 10px;
+    border-radius: 30px;
+    border: none;
+    background-color: #f5f5f5;
+    margin-bottom: 20px;
+  }
+  input[type="submit"] {
+    background-color: $headerbox;
+    color: $sidebg;
+    font-size: 20px;
+  }
+  .join__content {
+    margin-top: 50px;
+    border: 2px solid $headerbox;
+    text-align: center;
+    span {
+      color: $headerbox;
+    }
+  }
+}

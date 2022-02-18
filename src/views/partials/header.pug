@@ -1,12 +1,20 @@
 header
     nav
-        ul 
-            li 
-                a(href="/") your story
-            li  
+        ul
+            li.header__column
+                a(href="/").header__column__logo
+                    i.fas.fa-crown
+                    span your story
+            li.header__column
                 if error 
                     span=error
                 form(method="GET")
-                    input(placeholder="Please enter the Title", required, type="text", maxlength="10" name="keyword")
+                    input(placeholder="Search", required, type="text", maxlength="10" name="keyword")
                     button
                         i.fas.fa-search
+            if !loggedIn
+                li.header__column
+                    a(href="/login") login
+            else       
+                li.header__column
+                    a(href="/users/logout") logout
