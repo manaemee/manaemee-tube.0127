@@ -15,11 +15,25 @@ mixin video(video)
                         span Edit
                     a(href=`/videos/${video.id}/delete`)   
                         span Delete
-        video(src="/"+video.fileUrl, controls, width=650 data-videoId=video._id)     
-        //div 
-            button.play Play 
-            button.mute Mute
-            span.time 00:00 / 00:00
-            input(type="range", step="0.1" min="0" max="1").volume
+        div.video-mixin__row
+        video(src="/"+video.fileUrl, controls,  data-videoId=video._id)
         div.video-mixin__row
             p=video.description
+        hr    
+        if loggedIn
+            div.video-mixin__row.video__add__comments
+                form.commentFrom(data-videoId=video._id)
+                    textarea(placeholder="Add a comment...")
+                    input.video__comments-button(type="submit", value="COMMENT")
+        div.video-mixin__row.video__comments
+            ul
+                each comment in video.comments.reverse()
+                    li.video__comment
+                        div.video__comment__column
+                            img(src=comment.avatar)
+                            div.comment__info
+                                h3=comment.owner
+                                p=comment.text
+                        if String(comment.owner) === String(loggedInUser.username)        
+                            div.video__comment__column
+                                a(href=`/videos/${comment._id}/comment/delete`) Delete

@@ -4,11 +4,12 @@ import bcrypt from "bcrypt";
 const UserSchema = new mongoose.Schema({
     name: {type:String, required:true},
     username:{type:String, required:true, unique:true, maxlength:8},
-    avatar: String,
+    avatar: {type:String, default: ""},
     socialOnly:{type:Boolean, default:false},
     email: {type:String, required:true, unique:true},
     password: String,
-    videos:[{type:mongoose.Schema.Types.ObjectId, required:true, ref:"Video"}]
+    videos:[{type:mongoose.Schema.Types.ObjectId, required:true, ref:"Video"}],
+    comments:[{type: mongoose.Schema.Types.ObjectId, ref:"Comment"}],
 })
 
 

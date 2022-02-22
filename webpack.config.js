@@ -6,6 +6,7 @@ module.exports={
     entry: {
       main:BASE_JS+"main.js",
       videoPlayer:BASE_JS+"videoPlayer.js",
+      commentSection: BASE_JS+"commentSection.js",
     },
     mode:"development",
      plugins: [

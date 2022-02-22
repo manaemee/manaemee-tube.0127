@@ -2,8 +2,9 @@ div.side_content
     nav
         ul
             if loggedIn
-                li 
-                    img(src="/" + loggedInUser.avatar width="100" height="100").side__img
+                if loggedInUser.avatar
+                    li 
+                        img(src="/" + loggedInUser.avatar width="100" height="100").side__img
                 li 
                     a(href=`/users/${loggedInUser._id}`) 
                         span Profile

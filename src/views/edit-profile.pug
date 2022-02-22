@@ -3,7 +3,8 @@ block routes
     div.main__content
         div.content
             h1=pageTitle
-            img(src="/" + loggedInUser.avatar width="80" height="80")
+            if loggedInUser.avatar
+                img(src="/" + loggedInUser.avatar width="80" height="80")
             if !loggedInUser.socialOnly
                 a(href="change-password") Change password &rarr;
             hr

@@ -3,7 +3,7 @@ const playBtns = document.querySelectorAll(".play");
 const muteBtns = document.querySelectorAll(".mute");
 const times= document.querySelectorAll(".time");
 const volumes= document.querySelectorAll(".volume");
-console.log(videos);
+
 /* for (const playBtn of playBtns) {
     playBtn.addEventListener('click', function(event) {
 for(const video of videos){

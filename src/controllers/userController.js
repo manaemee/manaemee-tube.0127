@@ -2,6 +2,7 @@ import User from "../models/User";
 import Video from "../models/Video";
 import bcrypt from "bcrypt";
 import fetch from "node-fetch";
+import Comment from "../models/Comment";
 
 export const myprofile = (req, res) => res.send("my profile");
 export const getEditUser = (req, res) => {
@@ -16,6 +17,8 @@ export const postEditUser = async (req, res) => {
         file,
       } = req;
 const findUsername = await User.findOne({ username });
+const comment = await Comment.findOne({owner: findUsername.username});
+console.log(comment);
 const findEmail = await User.findOne({ email });
 if (findUsername._id != _id || findEmail._id != _id) {
     return res.render("edit-profile", {
@@ -29,10 +32,19 @@ const updatedUser = await User.findByIdAndUpdate(_id,{
     username,
     avatar: file? file.path: avatar
 },{new:true});
+if(comment){
+    comment.avatar = updatedUser.avatar;
+    comment.save();
+}
 req.session.user = updatedUser;
+
 return res.redirect("/users/edit");
 };
 export const getChangePassword = (req, res) =>{
+    if(req.session.user.socialOnly === true){
+        req.flash("error", "You don't have password");
+        return res.redirect("/");
+    }
 return res.render("change-password", {pageTitle:"change password"});
 }
 
@@ -54,6 +66,7 @@ const owner = await User.findById(_id);
  }
  owner.password = newpassword
  await owner.save();
+ req.flash("info", "Password updated")
  return res.redirect("/");
 }
 export const getJoin = (req, res) => {res.render("join" , {pageTitle: "Join"})};
@@ -103,7 +116,7 @@ export const postLogin = async (req, res) => {
    req.session.user = user;
     return res.redirect("/");
 }
-export const  Githubstart = (req , res) => {
+export const Githubstart = (req , res) => {
     const baseUrl= "https://github.com/login/oauth/authorize";
     const config = {
         client_id: process.env.GH_CLIENTID,
@@ -142,7 +155,6 @@ if("access_token" in data){
         exist =  await User.create({
             name:userRequest.login,
             username:userRequest.login,
-            avatar:userRequest.avatar_url,
             socialOnly:true,
             email:userRequest.email,
             password:"",
@@ -195,7 +207,6 @@ if("access_token" in data){
         exist =  await User.create({
             name:userRequest.properties.nickname,
             username:userRequest.properties.nickname,
-            avatar:userRequest.kakao_account.profile.thumbnail_image_url,
             socialOnly:true,
             email:userRequest.kakao_account.email,
             password:"",
@@ -212,13 +223,14 @@ if("access_token" in data){
 export const seeUser = async (req, res) => {
     const {id} = req.params;
     const user = await User.findById(id).populate("videos");
-    console.log(user);
     if(!user){
         return res.status(404).render("404");
     }
     return res.render("profile", {pageTitle:`${user.username}'s Profile`, user})
 };
 export const logout = (req, res) => {
-    req.session.destroy();
+    req.session.user= null;
+    req.session.loggedIn = false; 
+    req.flash("info", "log out");
     return res.redirect("/");
 };

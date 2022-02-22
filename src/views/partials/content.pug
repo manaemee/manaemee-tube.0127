@@ -1,6 +1,13 @@
 include ../mixins/video
+
 div.main__content
     div.video__content
+        if messages.error
+            div.message
+                span=messages.error
+        if messages.info
+            div.message
+                span=messages.info    
         each video in videos
             +video(video)
         else 
