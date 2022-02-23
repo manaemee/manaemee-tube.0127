@@ -6,9 +6,10 @@ mixin video(video)
                     img(src=video.owner.avatar)
                     a(href=`/users/${video.owner._id}`)=video.owner.username
                 div 
-                    small=video.hashtags 
+                    small=video.hashtags
                     h1=video.title
-                    span views #{video.views}
+                    span views #{video.views} • 
+                    span=video.createdAt
             if String(video.owner._id) === String(loggedInUser._id)
                 div.video-mixin__link
                     a(href=`/videos/${video.id}/edit`)
@@ -32,8 +33,8 @@ mixin video(video)
                         div.video__comment__column
                             img(src=comment.avatar)
                             div.comment__info
-                                h3=comment.owner
+                                h3=comment.username
                                 p=comment.text
-                        if String(comment.owner) === String(loggedInUser.username)        
+                        if String(comment.owner) === String(loggedInUser._id)        
                             div.video__comment__column
-                                a(href=`/videos/${comment._id}/comment/delete`) Delete
+                                a(href=`/api/comments/${comment._id}/delete`) Delete

@@ -18,8 +18,14 @@
       text-transform: uppercase;
       font-weight: 600;
     }
+    .side__img {
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+    }
   }
-  .side__img {
-    border-radius: 50%;
+  li:first-child {
+    display: flex;
+    justify-content: center;
   }
 }

@@ -47,7 +47,6 @@ const response = await fetch(`/api/comments/${videoId}/comment`, {
   });
   event.target[0].value="";
   const{name, image, commentId} = await response.json(); 
-  console.log(text, name, image,commentId);
   if(response.status === 201){
     addComment(text, name, image, commentId);
   }

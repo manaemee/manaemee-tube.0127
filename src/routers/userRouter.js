@@ -1,5 +1,5 @@
 import express from "express";
-import { getEditUser, getChangePassword, postChangePassword,postEditUser, seeUser,Githubstart,Githubfinish,Kakaostart, Kakaofinish, logout} from "../controllers/userController"
+import { getEditUser, getChangePassword, postChangePassword,postEditUser, seeUser,Githubstart,Githubfinish,Kakaostart,Kakaofinish,seeComment,logout} from "../controllers/userController"
 import { protectorMiddleware,publicOnlyMiddleware,notsocialOnlyMiddleware,avatarUpload } from "../middleware";
 
 const userRouter = express.Router();
@@ -13,5 +13,5 @@ userRouter.get("/kakao/start", publicOnlyMiddleware, Kakaostart);
 userRouter.get("/kakao/callback", publicOnlyMiddleware, Kakaofinish);
 userRouter.get("/logout", protectorMiddleware, logout);
 userRouter.get("/:id", seeUser);
-
+userRouter.get("/:id/comment", seeComment);
 export default userRouter;

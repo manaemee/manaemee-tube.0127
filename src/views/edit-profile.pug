@@ -4,12 +4,12 @@ block routes
         div.content
             h1=pageTitle
             if loggedInUser.avatar
-                img(src="/" + loggedInUser.avatar width="80" height="80")
+                img(src=loggedInUser.avatar width="80" height="80")
             if !loggedInUser.socialOnly
                 a(href="change-password") Change password &rarr;
             hr
             if errorMessage
-                span=errorMessage
+                span.error__message=errorMessage
             form(method="POST", enctype="multipart/form-data")
                 label(for="avatar")
                 input(id="avatar", type="file" name="avatar" accept="image/*")

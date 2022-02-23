@@ -31,7 +31,7 @@ export const notsocialOnlyMiddleware = (req, res, next) => {
 }
 export const avatarUpload = multer({
     dest:"uploads/avatars", limits:{
-        fileSize:60000,
+        fileSize:6000000,
     }
 })
 export const videoUpload = multer({

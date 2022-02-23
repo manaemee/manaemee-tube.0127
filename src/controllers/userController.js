@@ -1,8 +1,8 @@
 import User from "../models/User";
-import Video from "../models/Video";
 import bcrypt from "bcrypt";
 import fetch from "node-fetch";
 import Comment from "../models/Comment";
+
 
 export const myprofile = (req, res) => res.send("my profile");
 export const getEditUser = (req, res) => {
@@ -17,8 +17,7 @@ export const postEditUser = async (req, res) => {
         file,
       } = req;
 const findUsername = await User.findOne({ username });
-const comment = await Comment.findOne({owner: findUsername.username});
-console.log(comment);
+const comment = await Comment.findOne({username: findUsername.username});
 const findEmail = await User.findOne({ email });
 if (findUsername._id != _id || findEmail._id != _id) {
     return res.render("edit-profile", {
@@ -30,7 +29,7 @@ const updatedUser = await User.findByIdAndUpdate(_id,{
     name,
     email,
     username,
-    avatar: file? file.path: avatar
+    avatar: file? "/" + file.path: avatar
 },{new:true});
 if(comment){
     comment.avatar = updatedUser.avatar;
@@ -84,7 +83,8 @@ export const postJoin = async (req, res) => {
     if(exitsEmail){
         return res.status(400).render("join", {pageTitle:"Join", errorMessage:"This e-mail is already taken"});
     }
-    try{await User.create({
+    try{
+        await User.create({
         name,
         username,
         email,
@@ -204,13 +204,18 @@ if("access_token" in data){
     })).json();
     let exist= await User.findOne({email:userRequest.kakao_account.email});
     if(!exist){
-        exist =  await User.create({
-            name:userRequest.properties.nickname,
-            username:userRequest.properties.nickname,
-            socialOnly:true,
-            email:userRequest.kakao_account.email,
-            password:"",
-        })
+        try{
+            exist =  await User.create({
+                name:userRequest.properties.nickname,
+                username:userRequest.properties.nickname,
+                socialOnly:true,
+                email:userRequest.kakao_account.email,
+                password:"",
+            })
+        }catch(error){
+            req.flash("error", "This username maybe already in use");
+            return res.redirect("/login");
+        }
     }
     req.session.loggedIn = true;
     req.session.user = exist;
@@ -228,6 +233,14 @@ export const seeUser = async (req, res) => {
     }
     return res.render("profile", {pageTitle:`${user.username}'s Profile`, user})
 };
+export const seeComment = async (req, res) => {
+    const {user} = req.session;
+    const comments = await Comment.find({username:user.username}).sort({createdAt:"desc"});
+    if(!user){
+        return res.status(404).render("404");
+    }
+    return res.render("comment", {pageTitle:`${user.username}'s Comments`,comments})
+}
 export const logout = (req, res) => {
     req.session.user= null;
     req.session.loggedIn = false; 

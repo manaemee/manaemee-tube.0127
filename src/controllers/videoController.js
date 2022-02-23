@@ -1,6 +1,7 @@
 import User from "../models/User";
 import Video from "../models/Video";
 import Comment from "../models/Comment";
+import moment from "moment";
 export const trending = async (req, res) => {
 
 const {keyword} = req.query;
@@ -14,6 +15,7 @@ if(keyword){
    return res.render("404");
 }
 const videos = await Video.find({}).populate("owner").populate("comments").sort({createdAt:"desc"});
+console.log(videos);
 return res.render("home", {videos});
 };
 export const getUpload = (req, res) => {
@@ -30,6 +32,7 @@ session:{user:{_id}}
             title,
             fileUrl,
             description,
+            createdAt:moment().format('YYYY-MM-DD'),
             owner:_id,
             hashtags:Video.formatHashtags(hashtags)
         });
@@ -42,7 +45,6 @@ session:{user:{_id}}
             errorMessage: `error : ${error.errors.description}`,
         })
     }
-
     return res.redirect("/");
 }
 export const getEditVideo = async (req, res) => {
@@ -89,15 +91,20 @@ export const removeComment = async (req, res) => {
     const {id} = req.params;
     const {_id} = req.session.user;
     const comment = await Comment.findById(id);
-    const video = await Video.findById(String(comment.video));
+    if(String(_id) !== String(comment.owner)){
+        return res.status(403).redirect("/");
+    }
     await Comment.findByIdAndDelete(id);
-    const user =  await User.findById(_id);
-    const array = user.comments.filter((element) => String(element) !== String(id));
-    user.comments = array;
+    const video = await Video.findById(String(comment.video));
+    console.log("video",video);
+    const user =  await User.findById(String(comment.owner));
+    console.log("user", user);
+    const userarray = user.comments.filter((element) => String(element) !== String(id));
+    const videoarray = video.comments.filter((element) => String(element) !== String(id));
+    user.comments = userarray;
     user.save();
-    video.comments = array;
-    video.save(); 
-    req.session.user.comments = array;
+    video.comments = videoarray; 
+    video.save();
     return res.redirect("/");
 }
 export const registerView = async (req, res) => {
@@ -122,13 +129,16 @@ export const registerComment = async (req, res) => {
         return res.sendStatus(404);
       }
       const comment = await Comment.create({
+        createdAt:moment().format('YYYY-MM-DD HH:mm:ss'),
         text,
-        avatar: loggedUser.avatar,
-        owner: loggedUser.username,
+        avatar: user.avatar,
+        username:user.username,
+        owner: user._id,
         video: id,
       });
        video.comments.push(comment._id);
        video.save();
+       user.comments.push(comment._id);
        loggedUser.comments.push(comment._id);
        loggedUser.save();
        return res.status(201).json({name: user.username, image:user.avatar, commentId: comment._id});

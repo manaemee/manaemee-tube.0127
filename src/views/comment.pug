@@ -1,0 +1,10 @@
+extends base
+block routes
+    div.main__content
+        div.content
+            h1=pageTitle
+            ul.comment__content
+                each comment in comments
+                    li 
+                        div=comment.text
+                        div=comment.createdAt

@@ -9,6 +9,7 @@
 //Screens
 @import "../screens/login.scss";
 @import "../screens/profile.scss";
+@import "../screens/mycomment.scss";
 * {
   box-sizing: border-box;
 }
@@ -61,4 +62,8 @@ footer {
     border-radius: 30px;
     color: $contentbg;
   }
+}
+.error__message {
+  color: red;
+  font-weight: 700;
 }

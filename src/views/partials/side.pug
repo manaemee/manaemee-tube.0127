@@ -2,12 +2,18 @@ div.side_content
     nav
         ul
             if loggedIn
-                if loggedInUser.avatar
+                if loggedInUser.avatar !== ""
+                    li
+                        img(src=loggedInUser.avatar).side__img
+                else 
                     li 
-                        img(src="/" + loggedInUser.avatar width="100" height="100").side__img
+                        span 😄        
                 li 
                     a(href=`/users/${loggedInUser._id}`) 
                         span Profile
+                li 
+                    a(href=`/users/${loggedInUser._id}/comment`) 
+                        span Comment
                 li
                     a(href="/videos/upload") 
                         span upload
