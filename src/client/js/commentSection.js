@@ -1,4 +1,4 @@
-import regeneratorRuntime from "regenerator-runtime";
+import "regenerator-runtime";
 const forms = document.querySelectorAll(".commentFrom");
 
 
