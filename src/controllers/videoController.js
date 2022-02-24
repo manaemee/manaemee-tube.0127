@@ -8,7 +8,7 @@ const {keyword} = req.query;
 if(keyword){
     const videos = await Video.find({
         title: { $regex: keyword, $options: 'i' }
-    }).populate("owner").sort({createdAt:"desc"});
+    }).populate("owner").populate("comments").sort({createdAt:"desc"});
     if(videos.length !== 0){
         return res.render("search", {pageTitle:"search" , videos});
     }
