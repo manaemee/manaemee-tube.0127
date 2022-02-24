@@ -1,3 +1,4 @@
+import "regenerator-runtime";
 import "dotenv/config";
 import "./db"; //서버가 mongoDB에 연결됨.
 import app from "./server";
