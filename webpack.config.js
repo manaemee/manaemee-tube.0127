@@ -7,6 +7,8 @@ module.exports={
       main:BASE_JS+"main.js",
       videoPlayer:BASE_JS+"videoPlayer.js",
       commentSection: BASE_JS+"commentSection.js",
+      quotes: BASE_JS+"quotes.js",
+      weather: BASE_JS+"weather.js"
     },
     mode:"development",
      plugins: [

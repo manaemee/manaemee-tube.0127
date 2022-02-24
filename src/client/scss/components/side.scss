@@ -5,7 +5,10 @@
   left: 0;
   background-color: $sidebg;
   height: 100%;
-  padding: 10vh 0 72px 25vh;
+  padding: 10vh 5vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   ul {
     display: flex;
     flex-direction: column;
@@ -27,5 +30,13 @@
   li:first-child {
     display: flex;
     justify-content: center;
+  }
+  #quote {
+    display: flex;
+    flex-direction: column;
+
+    .name {
+      margin-bottom: 10px;
+    }
   }
 }

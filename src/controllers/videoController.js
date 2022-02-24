@@ -15,7 +15,6 @@ if(keyword){
    return res.render("404");
 }
 const videos = await Video.find({}).populate("owner").populate("comments").sort({createdAt:"desc"});
-console.log(videos);
 return res.render("home", {videos});
 };
 export const getUpload = (req, res) => {
@@ -84,7 +83,7 @@ export const removeVideo = async (req, res) => {
     return res.status(403).redirect("/");
 }
     user.videos = array;
-    user.save();
+    await user.save();
     return res.redirect("/");
 };
 export const removeComment = async (req, res) => {
@@ -96,15 +95,13 @@ export const removeComment = async (req, res) => {
     }
     await Comment.findByIdAndDelete(id);
     const video = await Video.findById(String(comment.video));
-    console.log("video",video);
     const user =  await User.findById(String(comment.owner));
-    console.log("user", user);
     const userarray = user.comments.filter((element) => String(element) !== String(id));
     const videoarray = video.comments.filter((element) => String(element) !== String(id));
     user.comments = userarray;
-    user.save();
+    await user.save();
     video.comments = videoarray; 
-    video.save();
+    await video.save();
     return res.redirect("/");
 }
 export const registerView = async (req, res) => {
