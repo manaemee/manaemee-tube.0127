@@ -29,7 +29,7 @@ const updatedUser = await User.findByIdAndUpdate(_id,{
     name,
     email,
     username,
-    avatar: file? "/" + file.path: avatar
+    avatar: file? file.location: avatar
 },{new:true});
 if(comment){
     comment.avatar = updatedUser.avatar;

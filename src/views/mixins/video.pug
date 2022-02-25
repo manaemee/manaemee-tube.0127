@@ -17,7 +17,7 @@ mixin video(video)
                     a(href=`/videos/${video.id}/delete`)   
                         span Delete
         div.video-mixin__row
-        video(src="/"+video.fileUrl, controls,  data-videoId=video._id)
+        video(src=video.fileUrl, controls,  data-videoId=video._id)
         div.video-mixin__row
             p=video.description
         hr    
