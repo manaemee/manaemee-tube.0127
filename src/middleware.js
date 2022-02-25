@@ -9,12 +9,16 @@ const s3 = new aws.S3({
     },
     });
 
-const multerUploader = multerS3({
+const s3ImageUploader = multerS3({
           s3: s3,
-          bucket: 'manaemeetube',
+          bucket: 'manaemeetube/images',
           acl:"public-read",
       })
-
+const s3VideoUploader = multerS3({
+            s3: s3,
+          bucket: 'manaemeetube/videos',
+          acl:"public-read",
+})
 export const localsMiddleware = (req, res, next) => {
     res.locals.siteName = "manaemeetube";
     res.locals.loggedIn=Boolean(req.session.loggedIn);
@@ -50,12 +54,12 @@ export const avatarUpload = multer({
     limits:{
         fileSize:6000000,
     },
-storage:   multerUploader
+storage: s3ImageUploader
 })
 export const videoUpload = multer({
     dest:"uploads/videos", 
     limits:{
         fileSize:15000000,
     },
-storage:multerUploader
+storage:s3VideoUploader
 })
