@@ -182,7 +182,7 @@ const baseUrl = "https://kauth.kakao.com/oauth/token";
 const config = {
     grant_type:"authorization_code",
     client_id:process.env.KAKAO_CLIENTID,
-    redirect_uri:process.env.KAKAO_REDIRECT,
+    redirect_uri:"https://manaemeetube.herokuapp.com/users/kakao/callback",
     code:req.query.code,
 }
 
