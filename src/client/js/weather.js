@@ -1,3 +1,4 @@
+import "regenerator-runtime/runtime"; 
 const weather = document.querySelector("#weather");
 const city = document.querySelector(".city");
 const description = document.querySelector(".description");
