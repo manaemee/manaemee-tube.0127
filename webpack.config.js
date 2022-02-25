@@ -13,7 +13,14 @@ module.exports={
      plugins: [
       new MiniCssExtractPlugin({
       filename: "css/styles.css",
-    })
+    }),
+    [
+      '@babel/plugin-transform-runtime',
+        {
+          helpers: false,
+          regenerator: true
+        }
+    ]
   ], 
     output:{
         filename: "js/[name].js",
