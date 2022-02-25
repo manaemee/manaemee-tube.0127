@@ -25,11 +25,12 @@ if (findUsername._id != _id || findEmail._id != _id) {
       errorMessage: "User is exist",
     });
   }
+const IsHeroku = process.env.NODE_ENV === "production";
 const updatedUser = await User.findByIdAndUpdate(_id,{
     name,
     email,
     username,
-    avatar: file? file.location: avatar
+    avatar: file ? (IsHeroku ? file.location: file.path): avatar
 },{new:true});
 if(comment){
     comment.avatar = updatedUser.avatar;
