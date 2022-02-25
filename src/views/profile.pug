@@ -20,7 +20,7 @@ block routes
                                             span Edit 
                                         a(href=`/videos/${video.id}/delete`)   
                                             span Delete
-                            video(src="/"+video.fileUrl ,controls, width=300)          
+                            video(src=video.fileUrl ,controls, width=300)          
             else
                 h2 There's no video
 block scripts 
