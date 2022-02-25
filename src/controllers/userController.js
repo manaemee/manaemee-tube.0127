@@ -171,7 +171,7 @@ export const Kakaostart = async (req, res) => {
     const baseUrl= "https://kauth.kakao.com/oauth/authorize";   
     const config = {
         client_id:process.env.KAKAO_CLIENTID,
-        redirect_uri:process.env.KAKAO_REDIRECT,    
+        redirect_uri:"https://manaemeetube.herokuapp.com/users/kakao/callback",    
     }
     const params = new URLSearchParams(config).toString();
     const finalURL = `${baseUrl}?${params}&response_type=code&scope=account_email`;
