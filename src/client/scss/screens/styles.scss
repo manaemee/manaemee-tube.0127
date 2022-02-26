@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap");
 @import "./_variable";
 @import "./reset.scss";
 //Components
@@ -6,6 +7,7 @@
 @import "../components/content.scss";
 @import "../components/video.scss";
 @import "../components/comments.scss";
+@import "../components/nomobile.scss";
 //Screens
 @import "../screens/login.scss";
 @import "../screens/profile.scss";

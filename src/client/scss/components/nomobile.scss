@@ -1,0 +1,20 @@
+#no-mobile {
+  position: absolute;
+  z-index: 99;
+  height: 100000vh;
+  width: 100vw;
+  background-color: red;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  span {
+    font-size: 36px;
+    margin-top: 50vh;
+    font-family: "Libre Baskerville", serif;
+  }
+}
+@media screen and (min-width: 1150px) {
+  #no-mobile {
+    display: none;
+  }
+}
