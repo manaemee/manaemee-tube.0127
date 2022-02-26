@@ -8,7 +8,7 @@ const {keyword} = req.query;
 if(keyword){
     const videos = await Video.find({
         title: { $regex: keyword, $options: 'i' }
-    }).populate("owner").sort({createdAt:"desc"});
+    }).populate("owner").populate("comments").sort({createdAt:"desc"});
     if(videos.length !== 0){
         return res.render("search", {pageTitle:"search" , videos});
     }
@@ -29,8 +29,7 @@ session:{user:{_id}}
 const IsHeroku = process.env.NODE_ENV === "production";
     try{
   const newVideo = await Video.create({
-            title,
-           
+            title, 
             fileUrl:IsHeroku ? file.location : file.path,
             description,
             createdAt:moment().format('YYYY-MM-DD'),
