@@ -4,7 +4,6 @@ import fetch from "node-fetch";
 import Comment from "../models/Comment";
 
 
-export const myprofile = (req, res) => res.send("my profile");
 export const getEditUser = (req, res) => {
     return res.render("edit-profile", {pageTitle:"Edit Profile"})
 };
@@ -37,7 +36,6 @@ if(comment){
     comment.save();
 }
 req.session.user = updatedUser;
-
 return res.redirect("/users/edit");
 };
 export const getChangePassword = (req, res) =>{
@@ -186,9 +184,7 @@ const config = {
     redirect_uri:"https://manaemeetube.herokuapp.com/users/kakao/callback",
     code:req.query.code,
 }
-
 const params = new URLSearchParams(config).toString();
-
 const finalUrl = `${baseUrl}?${params}`;
 const data = await(await fetch(finalUrl,{
     method:"POST",

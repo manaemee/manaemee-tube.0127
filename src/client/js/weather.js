@@ -1,5 +1,4 @@
 import "regenerator-runtime/runtime"; 
-const weather = document.querySelector("#weather");
 const city = document.querySelector(".city");
 const description = document.querySelector(".description");
 function onGeoOk(position) {
@@ -10,7 +9,7 @@ function onGeoOk(position) {
     .then((response) => response.json())
     .then((data) => {
       city.innerText = data.name;
-      weather.innerText = `${Math.round(data.main.temp)}℃ / feels like : ${Math.round(data.main.feels_like)}℃ / ${data.weather[0].description}`;
+      description.innerText = `${Math.round(data.main.temp)}℃ / feels like : ${Math.round(data.main.feels_like)}℃ / ${data.weather[0].description}`;
       });
   }
   function onGeoError() {

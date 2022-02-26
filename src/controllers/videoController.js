@@ -3,7 +3,6 @@ import Video from "../models/Video";
 import Comment from "../models/Comment";
 import moment from "moment";
 export const trending = async (req, res) => {
-
 const {keyword} = req.query;
 if(keyword){
     const videos = await Video.find({
@@ -77,9 +76,9 @@ export const postEditVideo = async (req, res) =>{
 export const removeVideo = async (req, res) => {
     const {id} = req.params;
     const {_id} = req.session.user;
-  const video =  await  Video.findByIdAndDelete(id);
-   const user = await User.findById(_id);
-   const array = user.videos.filter((element) => String(element) !== String(id));
+    const video =  await  Video.findByIdAndDelete(id);
+    const user = await User.findById(_id);
+    const array = user.videos.filter((element) => String(element) !== String(id));
    if(String(video.owner) !== String(_id)){
     return res.status(403).redirect("/");
 }
