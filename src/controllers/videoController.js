@@ -58,7 +58,7 @@ export const getEditVideo = async (req, res) => {
     req.flash("error", "Not authorized");
        return res.status(403).redirect("/");
    }
-    return res.render("VideoEdit", {pageTitle: "Edit Your Video",video});
+    return res.render("videoEdit", {pageTitle: "Edit Your Video",video});
 };
 export const postEditVideo = async (req, res) =>{
     const {id} = req.params;
