@@ -40,8 +40,9 @@
     }
   }
   #weather {
-    display: flex;
-    flex-direction: column;
+    .city {
+      margin-right: 5px;
+    }
     span {
       font-size: 13px;
       text-transform: uppercase;
